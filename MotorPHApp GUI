@@ -1,0 +1,104 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class MotorphApp extends JFrame {
+    private JTextField employeeIDField, loginTimeField, logoutTimeField;
+    private JTextArea outputArea;
+    private Database database;
+
+    public MotorphApp() {  // Renamed the constructor
+        // Set up the JFrame
+        setTitle("MotorPH Payroll System");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 400);
+        setLocationRelativeTo(null); // Center the window
+        setLayout(new BorderLayout());
+
+        // Initialize database
+        database = new Database();
+
+        // Panel for input fields and buttons
+        JPanel inputPanel = new JPanel(new GridLayout(4, 2, 5, 5));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Employee ID input
+        inputPanel.add(new JLabel("Employee ID:"));
+        employeeIDField = new JTextField();
+        inputPanel.add(employeeIDField);
+
+        // Login time input
+        inputPanel.add(new JLabel("Login Time (HH:mm):"));
+        loginTimeField = new JTextField();
+        inputPanel.add(loginTimeField);
+
+        // Logout time input
+        inputPanel.add(new JLabel("Logout Time (HH:mm):"));
+        logoutTimeField = new JTextField();
+        inputPanel.add(logoutTimeField);
+
+        // Submit button
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                submitButtonClicked();
+            }
+        });
+        inputPanel.add(submitButton);
+
+        // Clear button
+        JButton clearButton = new JButton("Clear");
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearButtonClicked();
+            }
+        });
+        inputPanel.add(clearButton);
+
+        // Add input panel to JFrame
+        add(inputPanel, BorderLayout.NORTH);
+
+        // Output area
+        outputArea = new JTextArea();
+        outputArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+        add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private void submitButtonClicked() {
+        String employeeID = employeeIDField.getText();
+        String loginTimeStr = loginTimeField.getText();
+        String logoutTimeStr = logoutTimeField.getText();
+
+    
+        try {
+            Date loginTime = new SimpleDateFormat("HH:mm").parse(loginTimeStr);
+            Date logoutTime = new SimpleDateFormat("HH:mm").parse(logoutTimeStr);
+            // Perform calculations...
+            outputArea.setText("Results will be displayed here...");
+        } catch (ParseException ex) {
+            outputArea.setText("Invalid time format. Please enter time in HH:mm format.");
+        }
+    }
+
+    private void clearButtonClicked() {
+        employeeIDField.setText("");
+        loginTimeField.setText("");
+        logoutTimeField.setText("");
+        outputArea.setText("");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new MotorphApp().setVisible(true);  // Updated the class name here
+            }
+        });
+    }
+}
