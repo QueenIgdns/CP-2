@@ -61,7 +61,7 @@ public class MotorphApp extends JFrame {
         });
         inputPanel.add(clearButton);
 
-        // Add input panel to JFrame
+        // Input panel to JFrame
         add(inputPanel, BorderLayout.NORTH);
 
         // Output area
@@ -102,3 +102,8 @@ public class MotorphApp extends JFrame {
         });
     }
 }
+
+
+
+
+
