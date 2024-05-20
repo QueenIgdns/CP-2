@@ -103,7 +103,114 @@ public class MotorphApp extends JFrame {
     }
 }
 
+Milestone Calculator
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+public class MilestoneCalculator extends JFrame {
+
+    private JTextField m1Field;
+    private JTextField m2Field;
+    private JTextField taField;
+    private JLabel resultLabel;
+
+    public MilestoneCalculator() {
+        // Setting up the frame
+        setTitle("Milestone Calculator");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Milestone 1
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(new JLabel("Milestone 1 (Max 25 points):"), gbc);
+        m1Field = new JTextField(10);
+        gbc.gridx = 1;
+        add(m1Field, gbc);
+
+        // Milestone 2
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(new JLabel("Milestone 2 (Max 40 points):"), gbc);
+        m2Field = new JTextField(10);
+        gbc.gridx = 1;
+        add(m2Field, gbc);
+
+        // Terminal Assessment
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        add(new JLabel("Terminal Assessment (Max 35 points):"), gbc);
+        taField = new JTextField(10);
+        gbc.gridx = 1;
+        add(taField, gbc);
+
+        // Calculate button
+        JButton calculateButton = new JButton("Calculate");
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        add(calculateButton, gbc);
+        
+        // Result label
+        resultLabel = new JLabel("");
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 0, 0, 0);
+        add(resultLabel, gbc);
+
+        // Action listener for the calculate button
+        calculateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                calculate();
+            }
+        });
+    }
+
+    private void calculate() {
+        try {
+            double m1 = validateInput(m1Field.getText(), 25);
+            double m2 = validateInput(m2Field.getText(), 40);
+            double ta = validateInput(taField.getText(), 35);
+
+            double total = m1 + m2 + ta;
+            resultLabel.setText("Total Grade: " + total);
+        } catch (NumberFormatException e) {
+            showError(e.getMessage());
+        }
+    }
+
+    private double validateInput(String value, int maxPoints) throws NumberFormatException {
+        try {
+            double val = Double.parseDouble(value);
+            if (val < 0 || val > maxPoints) {
+                throw new NumberFormatException("Value must be between 0 and " + maxPoints);
+            }
+            return val;
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Invalid input: " + value + ". Please enter a number between 0 and " + maxPoints);
+        }
+    }
+
+    private void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Input Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new MilestoneCalculator().setVisible(true);
+            }
+        });
+    }
+}
 
 
